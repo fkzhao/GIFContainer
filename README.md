@@ -7,9 +7,9 @@ iOS设备显示GIF图片的控件 核心代码来源于[FL](https://github.com/A
 
 ### Dependence
 
-ImageIO</br>
-MobileCoreServices
-CoreGraphics
+ImageIO<br/>
+MobileCoreServices<br/>
+CoreGraphics<br/>
 
 ### Screenshot
 
