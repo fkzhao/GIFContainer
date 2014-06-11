@@ -88,8 +88,8 @@
     if (!_displayLink) {
         NWGIFContainerProxy *weakProxy = [NWGIFContainerProxy weakProxyForObject:self];
         _displayLink = [CADisplayLink displayLinkWithTarget:weakProxy selector:@selector(displayDidRefresh:)];
-        // `NSRunLoopCommonModes` would allow timer events during scrolling (i.e. animation) but we don't support this behavior.
-        [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+        //如果RunLoop的mode设置为NSDefaultRunLoopMode scrollView滑动时将会阻塞动画
+        [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
         _displayLink.paused = YES;
     }
     
