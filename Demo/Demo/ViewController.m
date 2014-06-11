@@ -29,17 +29,17 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return 10;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 120.0f;
+    return 320.0f;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-        NWGIFContainerImageView *imageView = [[NWGIFContainerImageView alloc]initWithFrame:CGRectMake(10, 5, 300, 110)];
+        NWGIFContainerImageView *imageView = [[NWGIFContainerImageView alloc]initWithFrame:CGRectMake(10, 5, 300, 300)];
         imageView.tag = 1001;
         [cell.contentView addSubview:imageView];
 
