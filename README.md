@@ -5,6 +5,11 @@ GIFContainer
 
 iOS设备显示GIF图片的控件 核心代码来源于[FL](https://github.com/Anselz/FLAnimatedImage) <br/>
 
+### Dependence
+
+ImageIO
+MobileCoreServices
+CoreGraphics
 
 ### Screenshot
 
