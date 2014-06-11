@@ -8,7 +8,7 @@ iOS设备显示GIF图片的控件 核心代码来源于[FL](https://github.com/A
 
 ### Screenshot
 
-![github](https://github.com/Anselz/GIFContainer/blob/master/Screenshot.png "github")  
+![github](https://raw.githubusercontent.com/Anselz/GIFContainer/master/Screenshot.png "github")  
 
 ### Create
 
