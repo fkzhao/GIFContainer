@@ -124,7 +124,6 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
     return nil;
 }
 
-
 - (instancetype)initWithAnimatedGIFData:(NSData *)data
 {
     // Early return if no data supplied!

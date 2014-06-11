@@ -12,7 +12,6 @@
 @property (nonatomic, weak) id target;
 @end
 
-
 @implementation NWGIFContainerProxy
 #pragma mark Life Cycle
 
