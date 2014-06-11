@@ -44,14 +44,24 @@
         NWGIFContainerImageView *imageView = [[NWGIFContainerImageView alloc]initWithFrame:CGRectMake(10, 5, 300, 110)];
         imageView.tag = 1001;
         [cell.contentView addSubview:imageView];
+        UIActivityIndicatorView *acView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        acView.hidden = YES;
+        acView.tag = 1002;
+        [cell.contentView addSubview:acView];
     }
     NWGIFContainerImageView *imageView = (NWGIFContainerImageView *)[cell.contentView viewWithTag:1001];
+    UIActivityIndicatorView *acView = (UIActivityIndicatorView *)[cell.contentView viewWithTag:1002];
+    acView.center = cell.contentView.center;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        acView.hidden = NO;
+        [acView startAnimating];
         NSURL *url = [NSURL URLWithString:@"http://raphaelschaad.com/static/nyan.gif"];
         NSData *data = [NSData dataWithContentsOfURL:url];
         NWGIFContainerImage *animatedImage = [[NWGIFContainerImage alloc] initWithAnimatedGIFData:data];
         dispatch_async(dispatch_get_main_queue(), ^{
-             imageView.animatedImage = animatedImage;
+            [acView stopAnimating];
+            acView.hidden = YES;
+            imageView.animatedImage = animatedImage;
         });
         
     });
