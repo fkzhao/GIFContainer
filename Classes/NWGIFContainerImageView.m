@@ -205,7 +205,7 @@
     }
     UIImage *image = [self.animatedImage imageLazilyCachedAtIndex:self.currentFrameIndex];
     if (image) {
-               self.currentFrame = image;
+        self.currentFrame = image;
         if (self.needsDisplayWhenImageBecomesAvailable) {
             [self.layer setNeedsDisplay];
             self.needsDisplayWhenImageBecomesAvailable = NO;

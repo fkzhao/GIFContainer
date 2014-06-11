@@ -136,37 +136,31 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
     
     self = [super init];
     if (self) {
-        // Do one-time initializations of `readonly` properties directly to ivar to prevent implicit actions and avoid need for private `readwrite` property overrides.
-        
-        // Keep a strong reference to `data` and expose it read-only publicly.
-        // However, we will use the `_imageSource` as handler to the image data throughout our life cycle.
         _data = data;
         
         // Initialize internal data structures
-        // We'll fill in the initial `NSNull` values below, when we loop through all frames.
         _cachedFrames = [[NSMutableArray alloc] init];
         _cachedFrameIndexes = [[NSMutableIndexSet alloc] init];
         _requestedFrameIndexes = [[NSMutableIndexSet alloc] init];
         
         // Note: We could leverage `CGImageSourceCreateWithURL` too to add a second initializer `-initWithAnimatedGIFContentsOfURL:`.
         _imageSource = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
-        // Early return on failure!
         if (!_imageSource) {
             NSLog(@"Error: Failed to `CGImageSourceCreateWithData` for animated GIF data %@", data);
             return nil;
         }
         
-        // Early return if not GIF!
+        //获取图片类型
         CFStringRef imageSourceContainerType = CGImageSourceGetType(_imageSource);
+        //判断图片类型是否是GIF格式
         BOOL isGIFData = UTTypeConformsTo(imageSourceContainerType, kUTTypeGIF);
         if (!isGIFData) {
             NSLog(@"Error: Supplied data is of type %@ and doesn't seem to be GIF data %@", imageSourceContainerType, data);
             return nil;
         }
         
-        // Get `LoopCount`
-        // Note: 0 means repeating the animation indefinitely.
-        // Image properties example:
+        //获取LoopCount 0标示一直重复播放
+        // Image properties 示例:
         // {
         //     FileSize = 314446;
         //     "{GIF}" = {
@@ -174,6 +168,7 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
         //         LoopCount = 0;
         //     };
         // }
+       
         NSDictionary *imageProperties = (__bridge_transfer NSDictionary *)CGImageSourceCopyProperties(_imageSource, NULL);
         _loopCount = [[[imageProperties objectForKey:(id)kCGImagePropertyGIFDictionary] objectForKey:(id)kCGImagePropertyGIFLoopCount] unsignedIntegerValue];
         
@@ -184,7 +179,7 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
             CGImageRef frameImageRef = CGImageSourceCreateImageAtIndex(_imageSource, i, NULL);
             if (frameImageRef) {
                 UIImage *frameImage = [UIImage imageWithCGImage:frameImageRef];
-                // Check for valid `frameImage` before parsing its properties as frames can be corrupted (and `frameImage` even `nil` when `frameImageRef` was valid).
+                //检查图片是否合法
                 if (frameImage) {
                     // Set poster image
                     if (!self.posterImage) {
@@ -201,6 +196,7 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
                         self.cachedFrames[i] = [NSNull null];
                     }
                     
+                    //获取这一幁图片显示时间 就是所谓的延迟时间
                     // Get `DelayTime`
                     // Note: It's not in (1/100) of a second like still falsly described in the documentation as per iOS 7 but in seconds stored as `kCFNumberFloat32Type`.
                     // Frame properties example:
@@ -215,6 +211,8 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
                     //     };
                     // }
                     
+                    
+                    //获取指定桢图片的属性
                     NSDictionary *frameProperties = (__bridge_transfer NSDictionary *)CGImageSourceCopyPropertiesAtIndex(_imageSource, i, NULL);
                     NSDictionary *framePropertiesGIF = [frameProperties objectForKey:(id)kCGImagePropertyGIFDictionary];
                     
@@ -223,7 +221,7 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
                     if (!delayTime) {
                         delayTime = [framePropertiesGIF objectForKey:(id)kCGImagePropertyGIFDelayTime];
                     }
-                    // If we don't get a delay time from the properties, fall back to `kDelayTimeIntervalDefault` or carry over the preceding frame's value.
+                    //如果没有得到一个延迟时间的属性，回落到`kDelayTimeIntervalDefault`或结转的前一帧的值。
                     const NSTimeInterval kDelayTimeIntervalDefault = 0.1;
                     if (!delayTime) {
                         if (i == 0) {
@@ -234,10 +232,10 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
                             delayTime = delayTimesMutable[i - 1];
                         }
                     }
-                    // Support frame delays as low as `kDelayTimeIntervalMinimum`, with anything below being rounded up to `kDelayTimeIntervalDefault` for legacy compatibility.
-                    // This is how the fastest browsers do it as per 2012: http://nullsleep.tumblr.com/post/16524517190/animated-gif-minimum-frame-delay-browser-compatibility
                     const NSTimeInterval kDelayTimeIntervalMinimum = 0.02;
-                    // Use `[NSNumber compare:]` for comparison to let it decide how to deal with accurate float representation.
+        
+                    
+                    //如果延迟时间小于 最小时间 0.02 (这个地方目的是为了做播放流畅 0.02应该是根据大量测试总结出来的 可以参考http://nullsleep.tumblr.com/post/16524517190/animated-gif-minimum-frame-delay-browser-compatibility) PS：NSOrderedAscending 左边小于右边
                     if ([delayTime compare:@(kDelayTimeIntervalMinimum)] == NSOrderedAscending) {
                         NSLog(@"Verbose: Rounding frame %zu's `delayTime` from %f up to default %f (minimum supported: %f).", i, [delayTime floatValue], kDelayTimeIntervalDefault, kDelayTimeIntervalMinimum);
                         delayTime = @(kDelayTimeIntervalDefault);
@@ -266,6 +264,8 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
         
         // Calculate the optimal frame cache size: try choosing a larger buffer window depending on the predicted image size.
         // It's only dependent on the image size & number of frames and never changes.
+        
+        //真正性能优化在这里，更具图片的大小来判断图片的执行帧数
         CGFloat animatedImageDataSize = CGImageGetBytesPerRow(self.posterImage.CGImage) * self.size.height * self.frameCount / MEGABYTE;
         if (animatedImageDataSize <= NWAnimatedImageDataSizeCategoryAll) {
             _frameCacheSizeOptimal = self.frameCount;
@@ -276,13 +276,11 @@ typedef NS_ENUM(NSUInteger, NWAnimatedImageFrameCacheSize) {
             // The predicted size exceeds the limits to build up a cache and we go into low memory mode from the beginning.
             _frameCacheSizeOptimal = NWAnimatedImageFrameCacheSizeLowMemory;
         }
-        // In any case, cap the optimal cache size at the frame count.
         _frameCacheSizeOptimal = MIN(_frameCacheSizeOptimal, self.frameCount);
         
-        // Convenience/minor performance optimization; keep an index set handy with the full range to return in `-frameIndexesToCache`.
         _allFramesIndexSet = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0, self.frameCount)];
         
-        // System Memory Warnings Notification Handler
+        //注册收到系统内存警告监听
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     return self;

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		69677C0E19481B54006AD9CB /* swift.png in Resources */ = {isa = PBXBuildFile; fileRef = 69677C0D19481B54006AD9CB /* swift.png */; };
+		69677C1219481D10006AD9CB /* nyan.gif in Resources */ = {isa = PBXBuildFile; fileRef = 69677C1119481D10006AD9CB /* nyan.gif */; };
 		69C3E0891946E364007C381A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69C3E0881946E364007C381A /* Foundation.framework */; };
 		69C3E08B1946E364007C381A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69C3E08A1946E364007C381A /* CoreGraphics.framework */; };
 		69C3E08D1946E364007C381A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69C3E08C1946E364007C381A /* UIKit.framework */; };
@@ -39,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		69677C0D19481B54006AD9CB /* swift.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = swift.png; sourceTree = "<group>"; };
+		69677C1119481D10006AD9CB /* nyan.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = nyan.gif; sourceTree = "<group>"; };
 		69C3E0851946E364007C381A /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69C3E0881946E364007C381A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		69C3E08A1946E364007C381A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -144,6 +148,8 @@
 		69C3E08F1946E364007C381A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				69677C1119481D10006AD9CB /* nyan.gif */,
+				69677C0D19481B54006AD9CB /* swift.png */,
 				69C3E0901946E364007C381A /* Demo-Info.plist */,
 				69C3E0911946E364007C381A /* InfoPlist.strings */,
 				69C3E0941946E364007C381A /* main.m */,
@@ -263,7 +269,9 @@
 			files = (
 				69C3E0A11946E364007C381A /* Images.xcassets in Resources */,
 				69C3E0931946E364007C381A /* InfoPlist.strings in Resources */,
+				69677C1219481D10006AD9CB /* nyan.gif in Resources */,
 				69C3E09C1946E364007C381A /* Main.storyboard in Resources */,
+				69677C0E19481B54006AD9CB /* swift.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,6 +500,7 @@
 				69C3E0B91946E364007C381A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		69C3E0BA1946E364007C381A /* Build configuration list for PBXNativeTarget "DemoTests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +509,7 @@
 				69C3E0BC1946E364007C381A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

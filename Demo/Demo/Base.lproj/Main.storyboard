@@ -21,8 +21,8 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="2Ew-eV-ygx"/>
-                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="Xt7-pa-uDV"/>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="4gf-bz-1Zb"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="u4k-zS-TLz"/>
                                 </connections>
                             </tableView>
                         </subviews>

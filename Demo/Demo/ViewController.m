@@ -19,8 +19,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -31,7 +29,7 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return 1;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 120.0f;
@@ -48,7 +46,7 @@
     }
     NWGIFContainerImageView *imageView = (NWGIFContainerImageView *)[cell.contentView viewWithTag:1001];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSURL *url = [NSURL URLWithString:@"http://raphaelschaad.com/static/nyan.gif"];
+        NSURL *url = [[NSBundle mainBundle] URLForResource:@"nyan" withExtension:@"gif"];
         NSData *data = [NSData dataWithContentsOfURL:url];
         NWGIFContainerImage *animatedImage = [[NWGIFContainerImage alloc] initWithAnimatedGIFData:data];
         dispatch_async(dispatch_get_main_queue(), ^{
