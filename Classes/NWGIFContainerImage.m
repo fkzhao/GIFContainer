@@ -11,6 +11,9 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <CoreGraphics/CoreGraphics.h>
 
+#ifndef BYTE_SIZE
+    #define BYTE_SIZE		8		/* byte size in bits */
+#endif
 
 #define MEGABYTE (1024 * 1024)
 
